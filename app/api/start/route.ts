@@ -21,7 +21,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       query: conditionTrigger(address),
     });
     console.log('result', result);
-    if (result && result.conditionTrigger.success) {
+    if (result && result.data?.conditionTrigger.success) {
       const buttons = getAddressButtons(message.interactor);
       return new NextResponse(
         getFrameHtml({
