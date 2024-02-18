@@ -2,11 +2,9 @@ import { FrameRequest, getFrameMessage } from '@coinbase/onchainkit';
 import { NextRequest, NextResponse } from 'next/server';
 import { NEXT_PUBLIC_URL, PHI_GRAPH, queryForLand } from '../../config';
 import { allowedOrigin } from '../../lib/origin';
-import { kv } from '@vercel/kv';
 import { getFrameHtml } from '../../lib/getFrameHtml';
-import { LandResponse, Session } from '../../lib/types';
+import { LandResponse } from '../../lib/types';
 import { errorResponse, mintResponse } from '../../lib/responses';
-import signMintData from '../../lib/signMint';
 import { retryableApiPost } from '../../lib/retry';
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
@@ -21,124 +19,22 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const result = await retryableApiPost<LandResponse>(PHI_GRAPH, {
       query: queryForLand(address),
     });
-    if (isActive || (result.data && result.data.philandList.data)) {
+    if (result.data && result.data.philandList.data) {
       const fid = message.interactor.fid;
-      let session = ((await kv.get(`session:${fid}`)) ?? {}) as Session;
-      const { address, transactionId, checks, retries } = session;
-      const totalChecks = checks ?? 0;
-      const totalRetries = retries ?? 0;
 
-      // If we've retried 3 times, give up
-      if (totalRetries > 2) {
-        console.error('retries exceeded');
-        return errorResponse();
-      }
-
-      // If we've not checked 3 times, try to mint again
-      if (totalChecks < 3 && session.address) {
-        const { address } = session;
-        const sig = await signMintData({
-          to: address,
-          tokenId: 1,
-          fid,
-        });
-        const res = await fetch('https://frame.syndicate.io/api/v2/sendTransaction', {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-            Authorization: `Bearer ${process.env.SYNDICATE_API_KEY}`,
-          },
-          body: JSON.stringify({
-            frameTrustedData: body.trustedData.messageBytes,
-            contractAddress: process.env.MINER_CONTRACT_ADDRESS,
-            functionSignature: 'mint(address,uint256,uint256,bytes)',
-            args: [address, 1, fid, sig],
-          }),
-        });
-        if (res.status === 200) {
-          const {
-            success,
-            data: { transactionId },
-          } = await res.json();
-          if (success) {
-            session = { ...session, transactionId, checks: 0, retries: totalRetries + 1 };
-            await kv.set(`session:${fid}`, session);
-            const res = await fetch(
-              `https://frame.syndicate.io/api/transaction/${transactionId}/hash`,
-              {
-                headers: {
-                  'content-type': 'application/json',
-                  Authorization: `Bearer ${process.env.SYNDICATE_API_KEY}`,
-                },
-              },
-            );
-            if (res.status === 200) {
-              return new NextResponse(
-                getFrameHtml({
-                  buttons: [
-                    {
-                      label: '🔄 Check status',
-                    },
-                  ],
-                  post_url: `${NEXT_PUBLIC_URL}/api/check`,
-                  image: `${NEXT_PUBLIC_URL}/api/images/check`,
-                }),
-              );
-            }
-          }
-        }
-        return errorResponse();
-      }
-      // If we have a transactionId, check the status
-      if (transactionId) {
-        await kv.set(`session:${fid}`, { ...session, checks: totalChecks + 1 });
-        const res = await fetch(
-          `https://frame.syndicate.io/api/transaction/${transactionId}/hash`,
-          {
-            headers: {
-              'content-type': 'application/json',
-              Authorization: `Bearer ${process.env.SYNDICATE_API_KEY}`,
+      return new NextResponse(
+        getFrameHtml({
+          buttons: [
+            {
+              label: '🔄 Check status',
             },
-          },
-        );
-        if (res.status === 200) {
-          const {
-            data: { transactionHash },
-          } = await res.json();
-          if (transactionHash) {
-            await kv.set(`session:${fid}`, { ...session, transactionHash });
-            return new NextResponse(
-              getFrameHtml({
-                buttons: [
-                  {
-                    label: 'Transaction',
-                    action: 'link',
-                    target: `https://basescan.org/tx/${transactionHash}`,
-                  },
-                ],
-                image: `${NEXT_PUBLIC_URL}/api/images/success?address=${address}`,
-              }),
-            );
-          } else {
-            return new NextResponse(
-              getFrameHtml({
-                buttons: [
-                  {
-                    label: '🔄 Check status',
-                  },
-                ],
-                post_url: `${NEXT_PUBLIC_URL}/api/check`,
-                image: `${NEXT_PUBLIC_URL}/api/images/check`,
-              }),
-            );
-          }
-        }
-      }
-      // If we don't have a transactionId, mint
-      console.error;
-      return errorResponse();
+          ],
+          post_url: `${NEXT_PUBLIC_URL}/api/check`,
+          image: `${NEXT_PUBLIC_URL}/api/images/check`,
+        }),
+      );
     } else {
-      return mintResponse();
+      return errorResponse();
     }
   } else return new NextResponse('Unauthorized', { status: 401 });
 }

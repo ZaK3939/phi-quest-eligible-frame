@@ -4,9 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { NEXT_PUBLIC_URL, PHI_GRAPH, conditionTrigger, queryForLand } from '../../config';
 import { getAddressButtons } from '../../lib/addresses';
 import { allowedOrigin } from '../../lib/origin';
-import { kv } from '@vercel/kv';
 import { getFrameHtml } from '../../lib/getFrameHtml';
-import { Session, TriggerResponse } from '../../lib/types';
+import { TriggerResponse } from '../../lib/types';
 import { mintResponse } from '../../lib/responses';
 import { retryableApiPost } from '../../lib/retry';
 
@@ -22,6 +21,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const result = await retryableApiPost<TriggerResponse>(PHI_GRAPH, {
       query: conditionTrigger(address),
     });
+    console.log('result', result);
     if (result && result.conditionTrigger.success) {
       const fid = message.interactor.fid;
 
