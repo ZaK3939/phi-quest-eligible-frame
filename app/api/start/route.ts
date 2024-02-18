@@ -31,7 +31,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       getFrameHtml({
         buttons,
         image: `${NEXT_PUBLIC_URL}/api/images/unclaimed`,
-        post_url: `${NEXT_PUBLIC_URL}/api/confirm`,
+        post_url: `${NEXT_PUBLIC_URL}/api/unclaimed`,
       }),
     );
   } else return new NextResponse('Unauthorized', { status: 401 });
