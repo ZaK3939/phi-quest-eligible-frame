@@ -8,7 +8,6 @@ import { getFrameHtml } from '../../lib/getFrameHtml';
 import { TriggerResponse } from '../../lib/types';
 import { errorResponse, mintResponse } from '../../lib/responses';
 import { retryableApiPost } from '../../lib/retry';
-import { error } from 'console';
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const body: FrameRequest = await req.json();
@@ -21,6 +20,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       const result = await retryableApiPost<TriggerResponse>(PHI_GRAPH, {
         query: conditionTrigger(address),
       });
+      console.log(result);
       if (!result.data?.conditionTrigger.success) {
         return errorResponse();
       }
