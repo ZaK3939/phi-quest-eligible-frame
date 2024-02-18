@@ -3,8 +3,6 @@ import type { Metadata } from 'next';
 import { NEXT_PUBLIC_URL } from './config';
 
 export async function generateMetadata(): Promise<Metadata> {
-  // const { name } = await getCollection();
-  const name = 'zak3939';
   const frameMetadata = getFrameMetadata({
     buttons: [
       {
@@ -21,11 +19,11 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 
   return {
-    title: name,
-    description: "Check if you're eligible for a free mint",
+    title: 'Philand',
+    description: "Check if you're eligible for a mint",
     openGraph: {
-      title: name,
-      description: "Check if you're eligible for a free mint",
+      title: 'Philand',
+      description: "Check if you're eligible for a mint",
       images: [`${NEXT_PUBLIC_URL}/api/images/start`],
     },
     other: {
@@ -34,44 +32,6 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
-
-// const frameMetadata = getFrameMetadata({
-//   buttons: [
-//     {
-//       label: 'Story time!',
-//     },
-//     {
-//       action: 'link',
-//       label: 'Link to Google',
-//       target: 'https://www.google.com',
-//     },
-//     {
-//       label: 'Redirect to pictures',
-//       action: 'post_redirect',
-//     },
-//   ],
-//   image: {
-//     src: `${NEXT_PUBLIC_URL}/park-3.png`,
-//     aspectRatio: '1:1',
-//   },
-//   input: {
-//     text: 'Tell me a boat story',
-//   },
-//   postUrl: `${NEXT_PUBLIC_URL}/api/frame`,
-// });
-
-// export const metadata: Metadata = {
-//   title: 'zizzamia.xyz',
-//   description: 'LFG',
-//   openGraph: {
-//     title: 'zizzamia.xyz',
-//     description: 'LFG',
-//     images: [`${NEXT_PUBLIC_URL}/park-1.png`],
-//   },
-//   other: {
-//     ...frameMetadata,
-//   },
-// };
 
 export default async function Page() {
   return <></>;

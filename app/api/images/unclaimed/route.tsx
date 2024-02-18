@@ -4,7 +4,7 @@ import { CARD_DIMENSIONS } from '../../../config';
 
 export async function GET() {
   return new ImageResponse(
-    <Card message="Your mint transaction is in the queue." />,
+    <Card message="Your eligible check is in the queue." />,
     CARD_DIMENSIONS,
   );
 }
