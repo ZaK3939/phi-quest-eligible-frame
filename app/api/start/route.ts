@@ -14,8 +14,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   const { isValid, message } = await getFrameMessage(body, {
     neynarApiKey: process.env.NEYNAR_API_KEY,
   });
-
-  if (message?.button === 1 && isValid && allowedOrigin(message)) {
+  console.log('message', message);
+  if (message?.button === 2 && isValid && allowedOrigin(message)) {
     console.log('message', message);
     const address = message.interactor.verified_accounts[0].toLowerCase();
     const result = await retryableApiPost<TriggerResponse>(PHI_GRAPH, {

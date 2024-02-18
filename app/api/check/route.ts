@@ -4,7 +4,7 @@ import { NEXT_PUBLIC_URL, PHI_GRAPH, queryForLand } from '../../config';
 import { allowedOrigin } from '../../lib/origin';
 import { getFrameHtml } from '../../lib/getFrameHtml';
 import { LandResponse } from '../../lib/types';
-import { errorResponse, mintResponse } from '../../lib/responses';
+import { errorResponse } from '../../lib/responses';
 import { retryableApiPost } from '../../lib/retry';
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
@@ -14,14 +14,11 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   });
 
   if (message?.button === 1 && isValid && allowedOrigin(message)) {
-    const isActive = message.raw.action.interactor.active_status === 'active';
     const address = message.interactor.verified_accounts[0].toLowerCase();
     const result = await retryableApiPost<LandResponse>(PHI_GRAPH, {
       query: queryForLand(address),
     });
     if (result.data && result.data.philandList.data) {
-      const fid = message.interactor.fid;
-
       return new NextResponse(
         getFrameHtml({
           buttons: [
