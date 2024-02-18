@@ -43,8 +43,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
           image: `${NEXT_PUBLIC_URL}/api/images/check`,
         }),
       );
-
-      return errorResponse();
     } else {
       return mintResponse();
     }

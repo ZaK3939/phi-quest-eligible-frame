@@ -1,5 +1,4 @@
 import { FrameRequest, getFrameMessage, FrameValidationData } from '@coinbase/onchainkit';
-import { kv } from '@vercel/kv';
 import { NextRequest, NextResponse } from 'next/server';
 import { NEXT_PUBLIC_URL, PHI_GRAPH, queryForLand } from '../../config';
 import { getAddresses } from '../../lib/addresses';
@@ -21,18 +20,15 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   if (isValid && validButton(message) && allowedOrigin(message)) {
     const fid = message.interactor.fid;
-    const isActive = message.raw.action.interactor.active_status === 'active';
 
     const address = message.interactor.verified_accounts[0].toLowerCase();
     const result = await retryableApiPost<LandResponse>(PHI_GRAPH, {
       query: queryForLand(address),
     });
     console.log('result', result);
-    if (isActive || (result.data && result.data.philandList.data)) {
+    if (result.data && result.data.philandList.data) {
       const addresses = getAddresses(message.interactor);
       const address = addresses[message.button - 1];
-
-      await kv.set(`session:${fid}`, { address });
 
       return new NextResponse(
         getFrameHtml({
