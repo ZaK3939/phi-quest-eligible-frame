@@ -7,7 +7,7 @@ export async function GET() {
     (
       <Card
         message="Claim free with Warpcast active badge or mint with Warps."
-        // image={`${NEXT_PUBLIC_URL}/phi.png`}
+        image={`${NEXT_PUBLIC_URL}/phi.png`}
       />
     ),
     CARD_DIMENSIONS,
