@@ -1,9 +1,9 @@
 import { FrameRequest, getFrameMessage } from '@coinbase/onchainkit';
 import { NextRequest, NextResponse } from 'next/server';
-import { NEXT_PUBLIC_URL, PHI_GRAPH, queryForLand } from '../../config';
+import { NEXT_PUBLIC_URL, PHI_GRAPH, queryForClaim, queryForLand } from '../../config';
 import { allowedOrigin } from '../../lib/origin';
 import { getFrameHtml } from '../../lib/getFrameHtml';
-import { LandResponse } from '../../lib/types';
+import { ClaimedStatusResponse, LandResponse } from '../../lib/types';
 import { errorResponse } from '../../lib/responses';
 import { retryableApiPost } from '../../lib/retry';
 
@@ -15,15 +15,17 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   if (message?.button === 1 && isValid && allowedOrigin(message)) {
     const address = message.interactor.verified_accounts[0].toLowerCase();
-    const result = await retryableApiPost<LandResponse>(PHI_GRAPH, {
-      query: queryForLand(address),
+    const result = await retryableApiPost<ClaimedStatusResponse>(PHI_GRAPH, {
+      query: queryForClaim(address),
     });
-    if (result.data && result.data.philandList.data) {
+    if (result.data && result.data.claimedStatus.data) {
+      const data = result.data.claimedStatus.data;
+      console.log('data', data);
       return new NextResponse(
         getFrameHtml({
           buttons: [
             {
-              label: '🔄 Check status',
+              label: `🔄 Check status ${data.length}`,
             },
           ],
           post_url: `${NEXT_PUBLIC_URL}/api/check`,

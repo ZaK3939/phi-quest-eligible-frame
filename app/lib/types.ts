@@ -23,3 +23,13 @@ export interface TriggerResponse {
   };
   error?: Error;
 }
+
+export interface ClaimedStatusResponse {
+  data?: {
+    claimedStatus: {
+      data: string[];
+      status: string;
+    };
+  };
+  error?: Error;
+}

@@ -17,3 +17,7 @@ export function queryForLand(address: string) {
 export function conditionTrigger(address: string) {
   return `mutation conditionTrigger { conditionTrigger(input: {address: "${address}"}) { success }}`;
 }
+
+export function queryForClaim(address: string) {
+  return `claimedStatus { claimedStatus(input: {address: "${address}", unclaimed: true}) { data status }}`;
+}
