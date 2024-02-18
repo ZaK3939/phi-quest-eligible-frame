@@ -2,6 +2,7 @@ import { CARD_DIMENSIONS, TOKEN_IMAGE } from '../config';
 
 export function Card({ message, image }: { message: string; image?: string }) {
   const imageSrc = image ?? TOKEN_IMAGE;
+  console.log(image);
   return (
     <div
       style={{
