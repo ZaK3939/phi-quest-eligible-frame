@@ -14,7 +14,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   const { isValid, message } = await getFrameMessage(body, {
     neynarApiKey: process.env.NEYNAR_API_KEY,
   });
-  console.log('message', message);
   if (message?.button === 2 && isValid && allowedOrigin(message)) {
     const address = message.interactor.verified_accounts[0].toLowerCase();
     const result = await retryableApiPost<TriggerResponse>(PHI_GRAPH, {
@@ -30,7 +29,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
           post_url: `${NEXT_PUBLIC_URL}/api/confirm`,
         }),
       );
-      // }
     } else {
       return mintResponse();
     }

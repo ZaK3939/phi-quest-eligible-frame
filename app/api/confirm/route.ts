@@ -1,12 +1,12 @@
 import { FrameRequest, getFrameMessage, FrameValidationData } from '@coinbase/onchainkit';
 import { NextRequest, NextResponse } from 'next/server';
-import { NEXT_PUBLIC_URL, PHI_GRAPH, queryForLand } from '../../config';
+import { NEXT_PUBLIC_URL, PHI_GRAPH, queryForClaim, queryForLand } from '../../config';
 import { getAddresses } from '../../lib/addresses';
 import { allowedOrigin } from '../../lib/origin';
 import { getFrameHtml } from '../../lib/getFrameHtml';
 import { mintResponse } from '../../lib/responses';
 import { retryableApiPost } from '../../lib/retry';
-import { LandResponse } from '../../lib/types';
+import { ClaimedStatusResponse, LandResponse } from '../../lib/types';
 
 function validButton(message?: FrameValidationData) {
   return message?.button && message?.button > 0 && message?.button < 5;
@@ -19,14 +19,12 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   });
 
   if (isValid && validButton(message) && allowedOrigin(message)) {
-    const fid = message.interactor.fid;
-
     const address = message.interactor.verified_accounts[0].toLowerCase();
-    const result = await retryableApiPost<LandResponse>(PHI_GRAPH, {
-      query: queryForLand(address),
+    const result = await retryableApiPost<ClaimedStatusResponse>(PHI_GRAPH, {
+      query: queryForClaim(address),
     });
-    console.log('result', result);
-    if (result.data && result.data.philandList.data) {
+    console.log(result);
+    if (result.data && result.data.claimedStatus.data) {
       const addresses = getAddresses(message.interactor);
       const address = addresses[message.button - 1];
 
