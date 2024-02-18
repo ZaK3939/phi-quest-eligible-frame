@@ -19,5 +19,5 @@ export function conditionTrigger(address: string) {
 }
 
 export function queryForClaim(address: string) {
-  return `claimedStatus { claimedStatus(input: {address: "${address}", unclaimed: true}) { data status }}`;
+  return `query claimedStatus { claimedStatus(input: {address: "${address}", unclaimed: true}) { data }}`;
 }
