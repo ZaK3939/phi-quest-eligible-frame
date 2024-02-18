@@ -17,12 +17,15 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   if (message?.button === 2 && isValid && allowedOrigin(message)) {
     for (const address of message?.interactor.verified_accounts) {
-      const result = await retryableApiPost<TriggerResponse>(PHI_GRAPH, {
-        query: conditionTrigger(address),
-      });
-      console.log(result);
-      if (!result.data?.conditionTrigger.success) {
-        return errorResponse();
+      console.log('triggering condition for', address);
+      if (address) {
+        const result = await retryableApiPost<TriggerResponse>(PHI_GRAPH, {
+          query: conditionTrigger(address),
+        });
+        console.log(result);
+        if (!result.data?.conditionTrigger.success) {
+          return errorResponse();
+        }
       }
     }
 
