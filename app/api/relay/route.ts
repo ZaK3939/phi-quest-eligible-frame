@@ -15,17 +15,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   });
 
   if (isValid && allowedOrigin(message)) {
-    if (message.button === 1) {
-      const buttons = getAddressButtons(message.interactor);
-      return new NextResponse(
-        getFrameHtml({
-          buttons,
-          image: `${NEXT_PUBLIC_URL}/api/images/select`,
-          post_url: `${NEXT_PUBLIC_URL}/api/confirm`,
-        }),
-      );
-    }
-
     const address = message.interactor.verified_accounts[0].toLowerCase();
     const result = await retryableApiPost<LandResponse>(PHI_GRAPH, {
       query: queryForLand(address),
