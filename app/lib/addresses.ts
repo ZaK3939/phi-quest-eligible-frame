@@ -32,7 +32,7 @@ export function getAddressButtons(interactor: {
   if (interactor.verified_accounts) {
     interactor.verified_accounts.forEach((account) => {
       buttons.push({
-        label: `🟢 ${account.slice(0, 6)}`,
+        label: `CHECK your 🟢 ${account.slice(0, 6)}`,
       });
     });
   }

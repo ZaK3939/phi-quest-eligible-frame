@@ -22,3 +22,10 @@ export interface LandResponse {
   };
   error?: Error;
 }
+
+export interface TriggerResponse {
+  conditionTrigger: {
+    success: boolean;
+  };
+  error?: Error;
+}

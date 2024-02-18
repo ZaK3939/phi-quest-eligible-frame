@@ -1,7 +1,6 @@
 import { getFrameMetadata } from '@coinbase/onchainkit';
 import type { Metadata } from 'next';
 import { NEXT_PUBLIC_URL } from './config';
-import { getCollection } from './lib/collection';
 
 export async function generateMetadata(): Promise<Metadata> {
   // const { name } = await getCollection();
@@ -75,5 +74,5 @@ export async function generateMetadata(): Promise<Metadata> {
 // };
 
 export default async function Page() {
-  return (<></>);
+  return <></>;
 }

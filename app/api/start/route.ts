@@ -1,18 +1,12 @@
 import { FrameRequest, getFrameMessage } from '@coinbase/onchainkit';
 import { NextRequest, NextResponse } from 'next/server';
 
-import {
-  NEXT_PUBLIC_URL,
-  PHI_GRAPH,
-  ZORA_COLLECTION_ADDRESS,
-  ZORA_TOKEN_ID,
-  queryForLand,
-} from '../../config';
+import { NEXT_PUBLIC_URL, PHI_GRAPH, conditionTrigger, queryForLand } from '../../config';
 import { getAddressButtons } from '../../lib/addresses';
 import { allowedOrigin } from '../../lib/origin';
 import { kv } from '@vercel/kv';
 import { getFrameHtml } from '../../lib/getFrameHtml';
-import { LandResponse, Session } from '../../lib/types';
+import { Session, TriggerResponse } from '../../lib/types';
 import { mintResponse } from '../../lib/responses';
 import { retryableApiPost } from '../../lib/retry';
 
@@ -21,61 +15,39 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   const { isValid, message } = await getFrameMessage(body, {
     neynarApiKey: process.env.NEYNAR_API_KEY,
   });
-  console.log('isValid', isValid, 'message', message);
+
   if (message?.button === 1 && isValid && allowedOrigin(message)) {
-    const isActive = message.raw.action.interactor.active_status === 'active';
     console.log('message', message);
     const address = message.interactor.verified_accounts[0].toLowerCase();
-    const result = await retryableApiPost<LandResponse>(PHI_GRAPH, {
-      query: queryForLand(address),
+    const result = await retryableApiPost<TriggerResponse>(PHI_GRAPH, {
+      query: conditionTrigger(address),
     });
-    if (isActive || (result.data && result.data.philandList.data)) {
+    if (result && result.conditionTrigger.success) {
       const fid = message.interactor.fid;
-      const landName = result.data!.philandList.data[0].name;
-      const { transactionId, transactionHash } = ((await kv.get(`session:${fid}`)) ??
-        {}) as Session;
-      if (transactionHash) {
-        // Already minted
-        return new NextResponse(
-          getFrameHtml({
-            buttons: [
-              {
-                label: `Transaction ${landName}`,
-                action: 'link',
-                target: `https://basescan.org/tx/${transactionHash}`,
-              },
-              {
-                label: 'Mint',
-                action: 'mint',
-                target: `eip155:8453:${ZORA_COLLECTION_ADDRESS}:${ZORA_TOKEN_ID}`,
-              },
-            ],
-            image: `${NEXT_PUBLIC_URL}/api/images/claimed`,
-          }),
-        );
-      } else if (transactionId) {
-        // Mint in queue
-        return new NextResponse(
-          getFrameHtml({
-            buttons: [
-              {
-                label: '🔄 Check status',
-              },
-            ],
-            post_url: `${NEXT_PUBLIC_URL}/api/check`,
-            image: `${NEXT_PUBLIC_URL}/api/images/check`,
-          }),
-        );
-      } else {
-        const buttons = getAddressButtons(message.interactor);
-        return new NextResponse(
-          getFrameHtml({
-            buttons,
-            image: `${NEXT_PUBLIC_URL}/api/images/select`,
-            post_url: `${NEXT_PUBLIC_URL}/api/confirm`,
-          }),
-        );
-      }
+
+      // if (transactionId) {
+      //   // Mint in queue
+      //   return new NextResponse(
+      //     getFrameHtml({
+      //       buttons: [
+      //         {
+      //           label: '🔄 Check status',
+      //         },
+      //       ],
+      //       image: `${NEXT_PUBLIC_URL}/api/images/check`,
+      //       post_url: `${NEXT_PUBLIC_URL}/api/check`,
+      //     }),
+      //   );
+      // } else {
+      const buttons = getAddressButtons(message.interactor);
+      return new NextResponse(
+        getFrameHtml({
+          buttons,
+          image: `${NEXT_PUBLIC_URL}/api/images/select`,
+          post_url: `${NEXT_PUBLIC_URL}/api/confirm`,
+        }),
+      );
+      // }
     } else {
       return mintResponse();
     }
