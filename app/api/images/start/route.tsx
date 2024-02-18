@@ -6,7 +6,7 @@ export async function GET() {
   return new ImageResponse(
     (
       <Card
-        message="Claim free with Warpcast active badge or mint with Warps."
+        message="Build your web3 cities from your wallet activities"
         image={`${NEXT_PUBLIC_URL}/phi.png`}
       />
     ),
