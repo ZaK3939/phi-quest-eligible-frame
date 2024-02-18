@@ -27,11 +27,11 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     if (result.data && result.data.claimedStatus.data) {
       const addresses = getAddresses(message.interactor);
       const address = addresses[message.button - 1];
-
+      const tokenId = result.data.claimedStatus.data[0];
       return new NextResponse(
         getFrameHtml({
           buttons: [{ label: '⬅️ Back' }, { label: '✅ Mint' }],
-          image: `${NEXT_PUBLIC_URL}/api/images/confirm?address=${address}`,
+          image: `${NEXT_PUBLIC_URL}/api/images/confirm?address=${address}&tokenId=${tokenId}`,
           post_url: `${NEXT_PUBLIC_URL}/api/relay`,
         }),
       );
