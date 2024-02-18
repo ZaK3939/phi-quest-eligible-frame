@@ -16,8 +16,10 @@ export interface LandResponse {
 }
 
 export interface TriggerResponse {
-  conditionTrigger: {
-    success: boolean;
+  data?: {
+    conditionTrigger: {
+      success: boolean;
+    };
   };
   error?: Error;
 }

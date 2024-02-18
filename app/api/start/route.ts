@@ -16,29 +16,12 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   });
   console.log('message', message);
   if (message?.button === 2 && isValid && allowedOrigin(message)) {
-    console.log('message', message);
     const address = message.interactor.verified_accounts[0].toLowerCase();
     const result = await retryableApiPost<TriggerResponse>(PHI_GRAPH, {
       query: conditionTrigger(address),
     });
     console.log('result', result);
     if (result && result.conditionTrigger.success) {
-      const fid = message.interactor.fid;
-
-      // if (transactionId) {
-      //   // Mint in queue
-      //   return new NextResponse(
-      //     getFrameHtml({
-      //       buttons: [
-      //         {
-      //           label: '🔄 Check status',
-      //         },
-      //       ],
-      //       image: `${NEXT_PUBLIC_URL}/api/images/check`,
-      //       post_url: `${NEXT_PUBLIC_URL}/api/check`,
-      //     }),
-      //   );
-      // } else {
       const buttons = getAddressButtons(message.interactor);
       return new NextResponse(
         getFrameHtml({
