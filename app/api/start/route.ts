@@ -1,7 +1,13 @@
 import { FrameRequest, getFrameMessage } from '@coinbase/onchainkit';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { NEXT_PUBLIC_URL, PHI_GRAPH, conditionTrigger, queryForLand } from '../../config';
+import {
+  NEXT_PUBLIC_URL,
+  PHI_GRAPH,
+  conditionTrigger,
+  queryForClaimDirect,
+  queryForLand,
+} from '../../config';
 import { getAddressButtons } from '../../lib/addresses';
 import { allowedOrigin } from '../../lib/origin';
 import { getFrameHtml } from '../../lib/getFrameHtml';
@@ -22,6 +28,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         const result = await retryableApiPost<TriggerResponse>(PHI_GRAPH, {
           query: conditionTrigger(address),
         });
+        queryForClaimDirect(address); // to create cache
         console.log(result);
         if (!result.data?.conditionTrigger.success) {
           return errorResponse();

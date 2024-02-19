@@ -11,8 +11,6 @@ import { getAddresses } from '../../lib/addresses';
 import { allowedOrigin } from '../../lib/origin';
 import { getFrameHtml } from '../../lib/getFrameHtml';
 import { mintResponse } from '../../lib/responses';
-import { retryableApiPost } from '../../lib/retry';
-import { ClaimedStatusResponse, LandResponse } from '../../lib/types';
 
 function validButton(message?: FrameValidationData) {
   return message?.button && message?.button > 0 && message?.button < 5;
