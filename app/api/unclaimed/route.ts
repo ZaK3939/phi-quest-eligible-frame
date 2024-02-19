@@ -1,12 +1,6 @@
 import { FrameRequest, getFrameMessage, FrameValidationData } from '@coinbase/onchainkit';
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  NEXT_PUBLIC_URL,
-  PHI_GRAPH,
-  queryForClaim,
-  queryForClaimDirect,
-  queryForLand,
-} from '../../config';
+import { NEXT_PUBLIC_URL, queryForClaimDirect } from '../../config';
 import { getAddresses } from '../../lib/addresses';
 import { allowedOrigin } from '../../lib/origin';
 import { getFrameHtml } from '../../lib/getFrameHtml';

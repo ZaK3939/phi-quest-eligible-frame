@@ -1,18 +1,12 @@
 import { FrameRequest, getFrameMessage } from '@coinbase/onchainkit';
 import { NextRequest, NextResponse } from 'next/server';
 
-import {
-  NEXT_PUBLIC_URL,
-  PHI_GRAPH,
-  conditionTrigger,
-  queryForClaimDirect,
-  queryForLand,
-} from '../../config';
+import { NEXT_PUBLIC_URL, PHI_GRAPH, conditionTrigger, queryForClaimDirect } from '../../config';
 import { getAddressButtons } from '../../lib/addresses';
 import { allowedOrigin } from '../../lib/origin';
 import { getFrameHtml } from '../../lib/getFrameHtml';
 import { TriggerResponse } from '../../lib/types';
-import { errorResponse, mintResponse } from '../../lib/responses';
+import { errorResponse } from '../../lib/responses';
 import { retryableApiPost } from '../../lib/retry';
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {

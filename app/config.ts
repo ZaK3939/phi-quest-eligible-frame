@@ -1,4 +1,3 @@
-import axios from 'axios';
 import axiosBase from 'axios';
 
 export const NEXT_PUBLIC_URL = 'https://phi-quest-eligible-frame.vercel.app';
