@@ -7,7 +7,7 @@ export async function GET() {
     (
       <Card
         message="Your eligible check is in the queue."
-        image={`${NEXT_PUBLIC_URL}/phi-gif.gif`}
+        image={`${NEXT_PUBLIC_URL}/phi-intro.png`}
       />
     ),
     CARD_DIMENSIONS,
