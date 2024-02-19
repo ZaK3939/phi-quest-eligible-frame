@@ -21,10 +21,6 @@ export function conditionTrigger(address: string) {
   return `mutation conditionTrigger { conditionTrigger(input: {address: "${address}"}) { success }}`;
 }
 
-export function queryForClaim(address: string) {
-  return `query claimedStatus { claimedStatus(input: {address: "${address}", unclaimed: true}) { data }}`;
-}
-
 export async function queryForClaimDirect(address: string) {
   const axios = axiosBase.create({
     baseURL: 'https://utils-api.phi.blue',

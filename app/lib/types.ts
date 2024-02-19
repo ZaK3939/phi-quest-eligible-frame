@@ -1,5 +1,3 @@
-import { Hex } from 'viem';
-
 type Land = {
   name: string;
   landurl: string;
@@ -19,16 +17,6 @@ export interface TriggerResponse {
   data?: {
     conditionTrigger: {
       success: boolean;
-    };
-  };
-  error?: Error;
-}
-
-export interface ClaimedStatusResponse {
-  data?: {
-    claimedStatus: {
-      data: string[];
-      status: string;
     };
   };
   error?: Error;
