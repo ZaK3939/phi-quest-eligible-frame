@@ -7,7 +7,7 @@ export async function GET() {
     (
       <Card
         message="Build your web3 cities from your wallet activities"
-        image={`${NEXT_PUBLIC_URL}/phi-intro.png`}
+        image={`${NEXT_PUBLIC_URL}/phi404.png`}
       />
     ),
     CARD_DIMENSIONS,
