@@ -42,7 +42,6 @@ export async function retryableApiPost<T>(
         'Content-Type': 'application/json',
         'x-api-key': `${process.env.PHI_API_KEY}`,
       };
-      console.log(headers);
       const resp: AxiosResponse<T, any> = await axios.post<T>(endpoint, data, { headers: headers });
       if (resp.status == 200) {
         result = resp.data;

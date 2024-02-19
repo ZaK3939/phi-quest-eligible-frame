@@ -1,6 +1,12 @@
 import { FrameRequest, getFrameMessage } from '@coinbase/onchainkit';
 import { NextRequest, NextResponse } from 'next/server';
-import { NEXT_PUBLIC_URL, PHI_GRAPH, queryForClaim, queryForLand } from '../../config';
+import {
+  NEXT_PUBLIC_URL,
+  PHI_GRAPH,
+  queryForClaim,
+  queryForClaimDirect,
+  queryForLand,
+} from '../../config';
 import { allowedOrigin } from '../../lib/origin';
 import { getFrameHtml } from '../../lib/getFrameHtml';
 import { ClaimedStatusResponse, LandResponse } from '../../lib/types';
@@ -15,11 +21,12 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   if (message?.button === 1 && isValid && allowedOrigin(message)) {
     const address = message.interactor.verified_accounts[0].toLowerCase();
-    const result = await retryableApiPost<ClaimedStatusResponse>(PHI_GRAPH, {
-      query: queryForClaim(address),
-    });
-    if (result.data && result.data.claimedStatus.data) {
-      const data = result.data.claimedStatus.data;
+    // const result = await retryableApiPost<ClaimedStatusResponse>(PHI_GRAPH, {
+    //   query: queryForClaim(address),
+    // });
+    const result = await queryForClaimDirect(address);
+    if (result) {
+      const data = result;
       console.log('data', data);
       return new NextResponse(
         getFrameHtml({

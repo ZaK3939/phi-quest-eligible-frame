@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const NEXT_PUBLIC_URL = 'https://phi-quest-eligible-frame.vercel.app';
 export const ALLOWED_ORIGIN = 'phi-quest-eligible-frame.vercel.app';
 
@@ -20,4 +22,11 @@ export function conditionTrigger(address: string) {
 
 export function queryForClaim(address: string) {
   return `query claimedStatus { claimedStatus(input: {address: "${address}", unclaimed: true}) { data }}`;
+}
+
+export async function queryForClaimDirect(address: string) {
+  const res = await axios.post(
+    `https://utils-api.phi.blue/v1/philand/condition/check?address=${address}&unclaimed=true`,
+  );
+  return res.data.result;
 }
