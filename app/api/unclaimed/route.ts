@@ -33,7 +33,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     if (result) {
       const addresses = getAddresses(message.interactor);
       const address = addresses[message.button - 1];
-      const tokenId = result.data.claimedStatus.data[0];
+      const tokenId = result[0];
       return new NextResponse(
         getFrameHtml({
           buttons: [{ label: '⬅️ Back' }, { label: '✅ Mint' }],
