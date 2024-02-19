@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosBase from 'axios';
 
 export const NEXT_PUBLIC_URL = 'https://phi-quest-eligible-frame.vercel.app';
 export const ALLOWED_ORIGIN = 'phi-quest-eligible-frame.vercel.app';
@@ -25,8 +26,13 @@ export function queryForClaim(address: string) {
 }
 
 export async function queryForClaimDirect(address: string) {
-  const res = await axios.post(
-    `https://utils-api.phi.blue/v1/philand/condition/check?address=${address}&unclaimed=true`,
-  );
+  const axios = axiosBase.create({
+    baseURL: 'https://utils-api.phi.blue',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    responseType: 'json',
+  });
+  const res = await axios.get(`/v1/philand/condition/check?address=${address}&unclaimed=true`);
   return res.data.result;
 }
