@@ -19,7 +19,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   if (isValid && validButton(message) && allowedOrigin(message)) {
     const address = message.interactor.verified_accounts[0].toLowerCase();
     const result = await queryForClaimDirect(address);
-    if (result) {
+    if (result && result.length > 0) {
       const addresses = getAddresses(message.interactor);
       const address = addresses[message.button - 1];
       const tokenId = result[0];
