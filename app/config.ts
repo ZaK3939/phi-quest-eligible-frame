@@ -28,6 +28,8 @@ export async function queryForClaimDirect(address: string) {
     },
     responseType: 'json',
   });
-  const res = await axios.get(`/v1/philand/condition/check?address=${address}&unclaimed=true`);
+  const res = await axios.get(
+    `/v1/philand/condition/check?address=${address}&unclaimed=true&frame=true`,
+  );
   return res.data.result;
 }
