@@ -25,9 +25,14 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       const tokenId = result[0];
       return new NextResponse(
         getFrameHtml({
-          buttons: [{ label: '⬅️ Back' }, { label: '✅ Mint' }],
+          buttons: [
+            {
+              action: 'link',
+              label: '✅ Mint',
+              target: `https://quest.philand.xyz/items/0x3D8C06e65ebf06A9d40F313a35353be06BD46038/${tokenId}`,
+            },
+          ],
           image: `${NEXT_PUBLIC_URL}/api/images/confirm?address=${address}&tokenId=${tokenId}`,
-          post_url: `https://quest.philand.xyz/items/0x3D8C06e65ebf06A9d40F313a35353be06BD46038/${tokenId}`,
         }),
       );
     } else {
