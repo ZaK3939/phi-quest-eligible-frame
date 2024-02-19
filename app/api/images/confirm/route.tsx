@@ -8,5 +8,8 @@ export async function GET(req: NextRequest) {
   const address = searchParams.get('address') ?? '';
   const tokenId = searchParams.get('tokenId') ?? '';
 
-  return new ImageResponse(<Card message={`Mint ${tokenId} to ${address}?`} />, CARD_DIMENSIONS);
+  return new ImageResponse(
+    <Card message={`Mint ${tokenId} to ${address}?`} image={`/quest/${tokenId}.png`} />,
+    CARD_DIMENSIONS,
+  );
 }
