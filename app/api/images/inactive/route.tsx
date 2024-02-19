@@ -6,7 +6,7 @@ export async function GET() {
   return new ImageResponse(
     (
       <Card
-        message="Sorry, you don't have an eligible object. You can check back later."
+        message="Sorry, you don't have any completed quests. Check out the list of quests below."
         image={`${NEXT_PUBLIC_URL}/Dotty.png`}
       />
     ),
