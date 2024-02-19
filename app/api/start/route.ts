@@ -6,7 +6,7 @@ import { getAddressButtons } from '../../lib/addresses';
 import { allowedOrigin } from '../../lib/origin';
 import { getFrameHtml } from '../../lib/getFrameHtml';
 import { TriggerResponse } from '../../lib/types';
-import { errorResponse } from '../../lib/responses';
+import { No_Verified_accounts, errorResponse } from '../../lib/responses';
 import { retryableApiPost } from '../../lib/retry';
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
@@ -16,6 +16,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   });
 
   if (message?.button === 2 && isValid && allowedOrigin(message)) {
+    if (!message?.interactor.verified_accounts) return No_Verified_accounts();
     for (const address of message?.interactor.verified_accounts) {
       if (address) {
         const result = await retryableApiPost<TriggerResponse>(PHI_GRAPH, {

@@ -10,6 +10,21 @@ export function errorResponse() {
   );
 }
 
+export function No_Verified_accounts(fid: string) {
+  return new NextResponse(
+    getFrameHtml({
+      buttons: [
+        {
+          label: 'Phi Quest',
+          action: 'link',
+          target: `https://verify.warpcast.com/verify/${fid}`,
+        },
+      ],
+      image: `${NEXT_PUBLIC_URL}/api/images/error`,
+    }),
+  );
+}
+
 export async function mintResponse() {
   return new NextResponse(
     getFrameHtml({
