@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   return new ImageResponse(
     (
       <Card
-        message={`🎁　You are eligible to Mint.`}
+        message={`🎁 You are eligible to Mint.`}
         image={`${NEXT_PUBLIC_URL}/quest/${tokenId}.png`}
       />
     ),

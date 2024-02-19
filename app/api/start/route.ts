@@ -23,7 +23,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
           query: conditionTrigger(address),
         });
         queryForClaimDirect(address); // to create cache
-        console.log(result);
         if (!result.data?.conditionTrigger.success) {
           return errorResponse();
         }
