@@ -20,7 +20,7 @@ export function No_Verified_accounts(fid: number) {
           target: `https://verify.warpcast.com/verify/${fid}`,
         },
       ],
-      image: `${NEXT_PUBLIC_URL}/api/images/error`,
+      image: `${NEXT_PUBLIC_URL}/api/images/verify`,
     }),
   );
 }
