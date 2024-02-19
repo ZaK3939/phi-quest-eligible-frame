@@ -32,7 +32,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         getFrameHtml({
           buttons: [{ label: '⬅️ Back' }, { label: '✅ Mint' }],
           image: `${NEXT_PUBLIC_URL}/api/images/confirm?address=${address}&tokenId=${tokenId}`,
-          post_url: `${NEXT_PUBLIC_URL}/api/relay`,
+          post_url: `https://quest.philand.xyz/items/0x3D8C06e65ebf06A9d40F313a35353be06BD46038/${tokenId}`,
         }),
       );
     } else {
