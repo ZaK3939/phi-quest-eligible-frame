@@ -33,6 +33,17 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function Page() {
-  return <></>;
+export default function Page() {
+  const imageUrl = `${NEXT_PUBLIC_URL}/phi.gif`;
+  const style: React.CSSProperties = {
+    width: '100vw',
+    height: '100vh',
+    objectFit: 'cover',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    zIndex: -1,
+  };
+
+  return <img src={imageUrl} style={style} alt="Background" />;
 }
