@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Page() {
-  const imageUrl = `${NEXT_PUBLIC_URL}/phi.gif`;
+  const imageUrl = `${NEXT_PUBLIC_URL}/phi-gif.gif`;
   const style: React.CSSProperties = {
     width: '100vw',
     height: '100vh',
