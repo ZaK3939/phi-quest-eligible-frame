@@ -16,7 +16,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   });
 
   if (message?.button === 2 && isValid && allowedOrigin(message)) {
-    if (!message?.interactor.verified_accounts) return No_Verified_accounts();
+    if (!message?.interactor.verified_accounts)
+      return No_Verified_accounts(message?.interactor.fid);
     for (const address of message?.interactor.verified_accounts) {
       if (address) {
         const result = await retryableApiPost<TriggerResponse>(PHI_GRAPH, {

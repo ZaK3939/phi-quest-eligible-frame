@@ -10,7 +10,7 @@ export function errorResponse() {
   );
 }
 
-export function No_Verified_accounts(fid: string) {
+export function No_Verified_accounts(fid: number) {
   return new NextResponse(
     getFrameHtml({
       buttons: [
