@@ -15,7 +15,7 @@ export function No_Verified_accounts(fid: number) {
     getFrameHtml({
       buttons: [
         {
-          label: 'Phi Quest',
+          label: 'Verify Account',
           action: 'link',
           target: `https://verify.warpcast.com/verify/${fid}`,
         },
