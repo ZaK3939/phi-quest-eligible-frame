@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import { ImageResponse } from 'next/og';
 import { Card } from '../../../components/Card';
-import { CARD_DIMENSIONS } from '../../../config';
+import { CARD_DIMENSIONS, NEXT_PUBLIC_URL } from '../../../config';
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
@@ -9,7 +9,12 @@ export async function GET(req: NextRequest) {
   const tokenId = searchParams.get('tokenId') ?? '';
 
   return new ImageResponse(
-    <Card message={`Mint ${tokenId} to ${address}?`} image={`/quest/${tokenId}.png`} />,
+    (
+      <Card
+        message={`Mint ${tokenId} to ${address}?`}
+        image={`${NEXT_PUBLIC_URL}/quest/${tokenId}.png`}
+      />
+    ),
     CARD_DIMENSIONS,
   );
 }
