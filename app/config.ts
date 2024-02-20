@@ -31,5 +31,6 @@ export async function queryForClaimDirect(address: string) {
   const res = await axios.get(
     `/v1/philand/condition/check?address=${address}&unclaimed=true&frame=true`,
   );
+  console.log('queryForClaimDirect', res.data);
   return res.data.result;
 }
