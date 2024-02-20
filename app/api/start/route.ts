@@ -8,6 +8,7 @@ import { getFrameHtml } from '../../lib/getFrameHtml';
 import { TriggerResponse } from '../../lib/types';
 import { No_Verified_accounts, errorResponse } from '../../lib/responses';
 import { retryableApiPost } from '../../lib/retry';
+import { createCacheBustedImageUrl } from '../../lib/timestamp';
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const body: FrameRequest = await req.json();
@@ -32,11 +33,12 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     }
 
     const buttons = getAddressButtons(message.interactor);
+    const post_url = createCacheBustedImageUrl(`${NEXT_PUBLIC_URL}/api/unclaimed`);
     return new NextResponse(
       getFrameHtml({
         buttons,
         image: `${NEXT_PUBLIC_URL}/api/images/unclaimed`,
-        post_url: `${NEXT_PUBLIC_URL}/api/unclaimed`,
+        post_url,
       }),
     );
   } else return new NextResponse('Unauthorized', { status: 401 });

@@ -5,7 +5,6 @@ import { CARD_DIMENSIONS, NEXT_PUBLIC_URL } from '../../../config';
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
-  const address = searchParams.get('address') ?? '';
   const tokenId = searchParams.get('tokenId') ?? '';
 
   return new ImageResponse(
