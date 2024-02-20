@@ -1,4 +1,5 @@
 import axiosBase from 'axios';
+import { createCacheBustedImageUrl } from './lib/timestamp';
 
 export const NEXT_PUBLIC_URL = 'https://phi-quest-eligible-frame.vercel.app';
 export const ALLOWED_ORIGIN = 'phi-quest-eligible-frame.vercel.app';
@@ -28,9 +29,10 @@ export async function queryForClaimDirect(address: string) {
     },
     responseType: 'json',
   });
-  const res = await axios.get(
+  const getURL = createCacheBustedImageUrl(
     `/v1/philand/condition/check?address=${address}&unclaimed=true&frame=true`,
   );
+  const res = await axios.get(getURL);
   console.log('queryForClaimDirect', res.data);
   return res.data.result;
 }
