@@ -23,6 +23,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       const addresses = getAddresses(message.interactor);
       const address = addresses[message.button - 1];
       const tokenId = result[0];
+      console.log(address, tokenId, result);
       return new NextResponse(
         getFrameHtml({
           buttons: [
